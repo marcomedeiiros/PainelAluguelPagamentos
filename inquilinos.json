@@ -1,0 +1,23 @@
+[
+  {
+    "nome": "Leo",
+    "telefone": "279978-7055",
+    "email": "leodias@hotmail.com",
+    "data_inicio": "27/01/2023",
+    "data_saida": null
+  },
+  {
+    "nome": "Debora",
+    "telefone": "279988-7752",
+    "email": "deborasouza@hotmail.com",
+    "data_inicio": "21/05/2024",
+    "data_saida": null
+  },
+  {
+    "nome": "Felipe",
+    "telefone": "279972-5588",
+    "email": "felipesouza@gmail.com",
+    "data_inicio": "10/01/2025",
+    "data_saida": null
+  }
+]
