@@ -5,10 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Painel de Aluguéis e Pagamentos</title>
-    <link rel="stylesheet" href="estiloControle.css" />
+    <link rel="stylesheet" href="estiloControle.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>    
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <style>
         #logoutBtn {
             position: fixed;
@@ -62,26 +62,27 @@
         <button onclick="baixarResumoPDF()" class="btn">📄 Baixar Resumo em PDF</button>
     </section>
 
-    <script src="./script.js"></script>
+    <script src="/script.js"></script>
     <script>
         const token = localStorage.getItem('token');
         if (!token) {
             window.location.href = 'login.html';
         } else {
-            fetch('/api/dados-protegidos', {
-                headers: { 'Authorization': 'Bearer ' + token }
+            fetch('/api/validar-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
             })
-                .then(res => {
-                    if (!res.ok) throw new Error('Token inválido');
-                    return res.json();
-                })
+                .then(res => res.json())
                 .then(data => {
-                    console.log('Dados protegidos:', data.segredo);
+                    if (!data.valido) {
+                        alert('Token inválido ou expirado. Faça login novamente.');
+                        localStorage.removeItem('token');
+                        window.location.href = 'login.html';
+                    }
                 })
-                .catch(() => {
-                    alert('Token inválido ou expirado. Faça login novamente.');
-                    localStorage.removeItem('token');
-                    window.location.href = 'login.html';
+                .catch(err => {
+                    console.error('Erro ao validar token:', err);
                 });
         }
         function logout() {

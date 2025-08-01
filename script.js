@@ -332,4 +332,23 @@ async function baixarResumoPDF() {
     doc.save("resumo-mensal.pdf");
 }
 
+setInterval(async () => {
+    const novosInquilinos = await carregarArquivo('inquilinos.json');
+    const novosPagamentos = await carregarArquivo('pagamentos.json');
+
+    if (JSON.stringify(novosInquilinos) !== JSON.stringify(inquilinos) ||
+        JSON.stringify(novosPagamentos) !== JSON.stringify(pagamentos)) {
+        
+        inquilinos = novosInquilinos;
+        pagamentos = novosPagamentos;
+
+        document.getElementById('resumoInquilinos').innerHTML = gerarTabelaInquilinos(inquilinos);
+        document.getElementById('resumoPagamentos').innerHTML = gerarResumoPagamentos(pagamentos);
+        document.getElementById('resumoValores').innerHTML = gerarResumoValores(pagamentos);
+        gerarGraficoPagamentos(pagamentos);
+        gerarGraficoPizzaResumo(pagamentos, inquilinos);
+        console.log("Dados atualizados automaticamente");
+    }
+}, 10000); 
+
 iniciar();
