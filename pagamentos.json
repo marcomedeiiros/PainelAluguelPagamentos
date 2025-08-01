@@ -5,11 +5,6 @@
     "valor": 600.0
   },
   {
-    "nome": "Leo",
-    "data": "2025-07-31",
-    "valor": 600.0
-  },
-  {
     "nome": "Debora",
     "data": "2025-07-31",
     "valor": 400.0
@@ -18,5 +13,10 @@
     "nome": "Felipe",
     "data": "2025-07-31",
     "valor": 700.0
+  },
+  {
+    "nome": "Vanessa",
+    "data": "2025-08-01",
+    "valor": 3500.0
   }
 ]

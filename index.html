@@ -5,30 +5,90 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Painel de Aluguéis e Pagamentos</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="estiloControle.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <style>
+        #logoutBtn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+        }
+
+        #logoutBtn:hover {
+            background-color: #b91c1c;
+        }
+    </style>
 </head>
 
 <body>
 
+    <button id="logoutBtn" onclick="logout()">Sair</button>
+
     <h1>Painel de Aluguéis e Pagamentos</h1>
 
-    <div class="painel" id="resumoInquilinos">
+    <section class="painel" id="resumoInquilinos">
         <strong>Carregando inquilinos...</strong>
-    </div>
+    </section>
 
-    <div class="painel" id="resumoPagamentos">
+    <section class="painel" id="resumoPagamentos">
         <strong>Carregando pagamentos...</strong>
-    </div>
+    </section>
 
-    <div class="painel" id="resumoValores">
+    <section class="painel" id="resumoValores">
         <strong>Calculando valores...</strong>
-    </div>
+    </section>
 
-    <canvas id="graficoPagamentos" height="250"></canvas>
+    <section class="painel">
+        <h2>Gráfico Geral de Pagamentos</h2>
+        <canvas id="graficoPagamentos" height="300"></canvas>
+    </section>
 
-    <script src="script.js"></script>
+    <section class="painel" id="resumoMensal">
+        <h2>Resumo do Mês Atual</h2>
+        <canvas id="graficoPizzaResumo" width="300" height="300"></canvas>
+        <br />
+        <button onclick="baixarResumoPDF()" class="btn">📄 Baixar Resumo em PDF</button>
+    </section>
+
+    <script src="./script.js"></script>
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = 'login.html';
+        } else {
+            fetch('/api/dados-protegidos', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('Token inválido');
+                    return res.json();
+                })
+                .then(data => {
+                    console.log('Dados protegidos:', data.segredo);
+                })
+                .catch(() => {
+                    alert('Token inválido ou expirado. Faça login novamente.');
+                    localStorage.removeItem('token');
+                    window.location.href = 'login.html';
+                });
+        }
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
 
 </html>

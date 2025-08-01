@@ -152,7 +152,6 @@ def exibir_resumo_pagamentos():
         print(f" - {nome}: R$ {total_por_nome[nome]:.2f} em {contagem_por_nome[nome]} pagamento(s)")
 
 def main():
-    print("Simulador de IA para controle de inquilinos e pagamentos do Marcos.")
 
     while True:
         texto = input("\nVocê: ").strip().lower()

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Painel</title>
+  <link rel="stylesheet" href="login.css" />
+  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <div class="login-container">
+    <h2>Digite a senha para acessar</h2>
+    <input id="senha" type="password" placeholder="Senha" />
+    <button onclick="login()">Entrar</button>
+    <div class="erro" id="erro"></div>
+  </div>
+
+  <script>
+    async function login() {
+      const senha = document.getElementById('senha').value;
+      const erroDiv = document.getElementById('erro');
+      erroDiv.textContent = "";
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ senha })
+        });
+
+        if (!res.ok) throw new Error('Senha incorreta');
+        const data = await res.json();
+        localStorage.setItem('token', data.token);
+        window.location.href = 'index.html';
+      } catch (e) {
+        erroDiv.textContent = e.message;
+      }
+    }
+  </script>
+</body>
+</html>
